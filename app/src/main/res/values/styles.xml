@@ -50,7 +50,7 @@
 
 
     <style name="ToolBarTheme" parent="Widget.AppCompat.Toolbar">
-        <item name="titleTextAppearance">@style/ToolbarTitleTextAppearanceLight</item>
+        <item name="titleTextAppearance">@android:color/white</item>
     </style>
 
     <!--Change color of title on Toolbar-->
