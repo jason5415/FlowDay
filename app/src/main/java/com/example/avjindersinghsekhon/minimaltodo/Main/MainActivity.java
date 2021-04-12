@@ -3,6 +3,7 @@ package com.example.avjindersinghsekhon.minimaltodo.Main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,13 +12,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.avjindersinghsekhon.minimaltodo.About.AboutActivity;
+import com.example.avjindersinghsekhon.minimaltodo.About.AboutFragment;
 import com.example.avjindersinghsekhon.minimaltodo.AppDefault.AppDefaultActivity;
+import com.example.avjindersinghsekhon.minimaltodo.NightFragment;
 import com.example.avjindersinghsekhon.minimaltodo.R;
 import com.example.avjindersinghsekhon.minimaltodo.Settings.SettingsActivity;
+import com.example.avjindersinghsekhon.minimaltodo.Settings.SettingsFragment;
 
-public class MainActivity extends AppDefaultActivity {
+public class MainActivity extends AppDefaultActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
     @Override
@@ -29,12 +34,46 @@ public class MainActivity extends AppDefaultActivity {
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MainFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_day);
+        }
     }
-//        ActionBar actionBar = getSupportActionBar();
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_day:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MainFragment()).commit();
+                break;
+            case R.id.nav_night:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new NightFragment()).commit();
+                break;
+            case R.id.nav_about:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AboutFragment()).commit();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    //        ActionBar actionBar = getSupportActionBar();
 //        if (actionBar != null) {
 //            actionBar.setDisplayHomeAsUpEnabled(false);
 //        }
